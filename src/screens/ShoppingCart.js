@@ -29,7 +29,7 @@ const ShoppingCartTotals = () => (
 const ShoppingCart = () => {
   return (
     <>
-      <View style={{ marginTop: 50, flex: 1 }}>
+      <View style={{ flex: 1 }}>
         <FlatList
           data={cart}
           renderItem={({ item }) => <CartListItem cartItem={item} />}

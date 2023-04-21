@@ -12,41 +12,43 @@ import {
 import products from "../data/products";
 import { Ionicons } from "@expo/vector-icons";
 
-const ProductDetailsScreen = () => {
+const ProductDetailsScreen = ({ navigation }) => {
   const product = products[0];
   const { width } = useWindowDimensions();
 
   const addToCart = () => {
-    console.info("Added to cart");
+    console.warn("Added to cart");
   };
 
   const goBack = () => {
-    console.warn("Going back");
+    navigation.goBack();
   };
 
   return (
     <View>
-      <Pressable onPress={goBack} style={styles.icon}>
-        <Ionicons name="close" size={24} color="white" />
-      </Pressable>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <FlatList
-          data={product.images}
-          renderItem={({ item }) => (
-            <Image
-              source={{
-                uri: item,
-              }}
-              style={{
-                width: width,
-                aspectRatio: 1,
-              }}
-            />
-          )}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled
-        />
+        <>
+          <Pressable onPress={goBack} style={styles.icon}>
+            <Ionicons name="close" size={24} color="white" />
+          </Pressable>
+          <FlatList
+            data={product.images}
+            renderItem={({ item }) => (
+              <Image
+                source={{
+                  uri: item,
+                }}
+                style={{
+                  width: width,
+                  aspectRatio: 1,
+                }}
+              />
+            )}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            pagingEnabled
+          />
+        </>
 
         <View style={{ padding: 20 }}>
           <Text style={styles.title}>{product.name}</Text>
