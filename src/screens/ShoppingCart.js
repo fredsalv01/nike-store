@@ -20,8 +20,8 @@ const ShoppingCartTotals = () => (
       <Text style={styles.text}>10,00 US$</Text>
     </View>
     <View style={styles.row}>
-      <Text style={styles.textBold}>Total</Text>
-      <Text style={styles.textBold}>420,00 US$</Text>
+      <Text style={styles.textDark}>Total</Text>
+      <Text style={styles.textDark}>420,00 US$</Text>
     </View>
   </View>
 );
@@ -61,8 +61,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "gray",
   },
-  textBold: {
-    font: 16,
+  textDark: {
+    fontSize: 16,
     fontWeight: "500",
   },
   button: {
