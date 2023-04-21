@@ -11,10 +11,10 @@ import {
 } from "react-native";
 import products from "../data/products";
 import { Ionicons } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
 
-const ProductDetailsScreen = ({ route, navigation }) => {
-  const { index } = route.params;
-  const product = products[index];
+const ProductDetailsScreen = ({ navigation }) => {
+  const product = useSelector((state) => state.products.selectedProduct);
   const { width } = useWindowDimensions();
 
   const addToCart = () => {
