@@ -15,9 +15,9 @@ const ProductsScreen = ({ navigation }) => {
   return (
     <FlatList
       data={products}
-      renderItem={({ item }) => (
+      renderItem={({ item, index }) => (
         <Pressable
-          onPress={() => navigation.navigate("Product Details", { item })}
+          onPress={() => navigation.navigate("Product Details", { index })}
           style={styles.itemContainer}
         >
           <Image

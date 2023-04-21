@@ -12,8 +12,9 @@ import {
 import products from "../data/products";
 import { Ionicons } from "@expo/vector-icons";
 
-const ProductDetailsScreen = ({ navigation }) => {
-  const product = products[0];
+const ProductDetailsScreen = ({ route, navigation }) => {
+  const { index } = route.params;
+  const product = products[index];
   const { width } = useWindowDimensions();
 
   const addToCart = () => {
