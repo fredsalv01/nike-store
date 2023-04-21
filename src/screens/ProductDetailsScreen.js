@@ -30,7 +30,6 @@ const ProductDetailsScreen = () => {
         <Ionicons name="close" size={24} color="white" />
       </Pressable>
       <ScrollView showsVerticalScrollIndicator={false}>
-
         <FlatList
           data={product.images}
           renderItem={({ item }) => (
@@ -54,7 +53,6 @@ const ProductDetailsScreen = () => {
           <Text style={styles.price}>${product.price}</Text>
           <Text style={styles.description}>{product.description}</Text>
         </View>
-
       </ScrollView>
       <TouchableOpacity onPress={addToCart} style={styles.button}>
         <Text style={styles.buttonText}> Add to Cart</Text>
