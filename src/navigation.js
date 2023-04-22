@@ -6,11 +6,12 @@ import ProductsScreen from "./screens/ProductsScreen";
 import ShoppingCart from "./screens/ShoppingCart";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
+import { selectNumbertOfItems } from "./store/cartSlice";
+
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
-  const cart = useSelector((state) => state.cart.cart);
-  const cartItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+  const cartItems = useSelector(selectNumbertOfItems);
   return (
     <NavigationContainer>
       <Stack.Navigator>

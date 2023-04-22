@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import CartListItem from "../components/CartListItem";
 import { useSelector } from "react-redux";
+import { selectSubTotal } from "../store/cartSlice";
 
 const ShoppingCartTotals = ({ subTotal, deliveryFee }) => (
   <View style={styles.totalsContainer}>
@@ -16,7 +17,7 @@ const ShoppingCartTotals = ({ subTotal, deliveryFee }) => (
       <Text style={styles.text}>{subTotal} US$</Text>
     </View>
     <View style={styles.row}>
-      <Text style={styles.text}>Delivery</Text>
+      <Text style={styles.text}>Delivery {deliveryFee === 0 ? "(Free < $200)" : ""}</Text>
       <Text style={styles.text}>{deliveryFee} US$</Text>
     </View>
     <View style={styles.row}>
@@ -30,10 +31,7 @@ const ShoppingCart = () => {
   const cart = useSelector((state) => state.cart.cart);
   const FREE_DELIVERY = useSelector((state) => state.cart.freeDeliveryFrom);
   const defaultDeliveryFee = useSelector((state) => state.cart.deliveryFee);
-  const subTotal = cart.reduce(
-    (acc, item) => acc + item.quantity * item.product.price,
-    0
-  );
+  const subTotal = useSelector(selectSubTotal);
 
   const deliveryFee = subTotal >= FREE_DELIVERY ? defaultDeliveryFee : 0;
 
