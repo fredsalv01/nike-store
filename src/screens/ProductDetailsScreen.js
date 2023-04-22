@@ -11,14 +11,17 @@ import {
 } from "react-native";
 import products from "../data/products";
 import { Ionicons } from "@expo/vector-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { cartSlice } from "../store/cartSlice";
 
-const ProductDetailsScreen = ({ route, navigation }) => {
-  const { index } = route.params;
-  const product = products[index];
+const ProductDetailsScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const product = useSelector((state) => state.products.selectedProduct);
   const { width } = useWindowDimensions();
 
   const addToCart = () => {
-    console.warn("Added to cart");
+    dispatch(cartSlice.actions.addToCart(product));
+    goBack();
   };
 
   const goBack = () => {
