@@ -7,33 +7,45 @@ import {
   View,
 } from "react-native";
 import CartListItem from "../components/CartListItem";
-import cart from "../data/cart";
+import { useSelector } from "react-redux";
 
-const ShoppingCartTotals = () => (
+const ShoppingCartTotals = ({ subTotal, deliveryFee }) => (
   <View style={styles.totalsContainer}>
     <View style={styles.row}>
       <Text style={styles.text}>SubTotal</Text>
-      <Text style={styles.text}>410,00 US$</Text>
+      <Text style={styles.text}>{subTotal} US$</Text>
     </View>
     <View style={styles.row}>
       <Text style={styles.text}>Delivery</Text>
-      <Text style={styles.text}>10,00 US$</Text>
+      <Text style={styles.text}>{deliveryFee} US$</Text>
     </View>
     <View style={styles.row}>
       <Text style={styles.textDark}>Total</Text>
-      <Text style={styles.textDark}>420,00 US$</Text>
+      <Text style={styles.textDark}>{deliveryFee + subTotal} US$</Text>
     </View>
   </View>
 );
 
 const ShoppingCart = () => {
+  const cart = useSelector((state) => state.cart.cart);
+  const FREE_DELIVERY = useSelector((state) => state.cart.freeDeliveryFrom);
+  const defaultDeliveryFee = useSelector((state) => state.cart.deliveryFee);
+  const subTotal = cart.reduce(
+    (acc, item) => acc + item.quantity * item.product.price,
+    0
+  );
+
+  const deliveryFee = subTotal >= FREE_DELIVERY ? defaultDeliveryFee : 0;
+
   return (
     <>
       <View style={{ flex: 1 }}>
         <FlatList
           data={cart}
           renderItem={({ item }) => <CartListItem cartItem={item} />}
-          ListFooterComponent={() => <ShoppingCartTotals />}
+          ListFooterComponent={() => (
+            <ShoppingCartTotals subTotal={subTotal} deliveryFee={deliveryFee} />
+          )}
         />
         <TouchableOpacity onPress={{}} style={styles.button}>
           <Text style={styles.buttonText}>Checkout</Text>

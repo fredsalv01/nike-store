@@ -15,7 +15,6 @@ export const productsSlice = createSlice({
     },
     setSelectedProduct: (state, action) => {
       const productId = action.payload;
-      console.log("product Id", productId);
       state.selectedProduct = state.products.find(
         (product) => product.id === productId
       );

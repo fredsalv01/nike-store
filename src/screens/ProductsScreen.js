@@ -15,16 +15,18 @@ const ProductsScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products.products);
 
+  const HandleSelectProduct = (id) => {
+    // update selected product
+    dispatch(productsSlice.actions.setSelectedProduct(id));
+    navigation.navigate("Product Details");
+  };
+
   return (
     <FlatList
       data={products}
       renderItem={({ item, index }) => (
         <Pressable
-          onPress={() => {
-            // update selected product
-            dispatch(productsSlice.actions.setSelectedProduct(item.id));
-            navigation.navigate("Product Details")
-          }}
+          onPress={() => HandleSelectProduct(item.id)}
           style={styles.itemContainer}
         >
           <Image

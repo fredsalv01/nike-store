@@ -5,9 +5,12 @@ import ProductDetailsScreen from "./screens/ProductDetailsScreen";
 import ProductsScreen from "./screens/ProductsScreen";
 import ShoppingCart from "./screens/ShoppingCart";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
+  const cart = useSelector((state) => state.cart.cart);
+  const cartItems = cart.reduce((acc, item) => acc + item.quantity, 0);
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -21,7 +24,15 @@ const Navigation = () => {
                 style={{ flexDirection: "row", marginRight: 10 }}
               >
                 <FontAwesome5 name="shopping-cart" size={18} color="gray" />
-                <Text style={{ marginLeft: 5, fontWeight: "500" }}>1</Text>
+                <Text
+                  style={{
+                    marginLeft: 5,
+                    fontWeight: "500",
+                    verticalAlign: "top",
+                  }}
+                >
+                  {cartItems}
+                </Text>
               </Pressable>
             ),
             headerBackTitle: "Back",
@@ -43,7 +54,6 @@ const Navigation = () => {
             title: "Cart",
             headerBackTitle: "Back",
             headerBackTitleVisible: true,
-            
           }}
         />
       </Stack.Navigator>
