@@ -1,10 +1,32 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable, Alert } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { cartSlice } from "../store/cartSlice";
 
 const CartListItem = ({ cartItem }) => {
   const dispatch = useDispatch();
+
+  const removeItem = () => {
+    Alert.alert("Warning", "Remove this item from cart?", [
+      // The "Yes" button
+      {
+        text: "Yes",
+        onPress: () => {
+          dispatch(
+            cartSlice.actions.removeFromCart({
+              productId: cartItem.product.id,
+            })
+          );
+        },
+      },
+      // The "No" button
+      // Does nothing but dismiss the dialog when tapped
+      {
+        text: "No",
+      },
+    ]);
+  };
+
   const increaseQuantity = () => {
     dispatch(
       cartSlice.actions.changeQuantity({
@@ -28,8 +50,15 @@ const CartListItem = ({ cartItem }) => {
       <Image source={{ uri: cartItem.product.image }} style={styles.image} />
 
       <View style={styles.contentContainer}>
-        <Text style={styles.name}>{cartItem.product.name}</Text>
-        <Text style={styles.size}>Size {cartItem.size}</Text>
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <View>
+            <Text style={styles.name}>{cartItem.product.name}</Text>
+            <Text style={styles.size}>Size {cartItem.size}</Text>
+          </View>
+          <Pressable onPress={removeItem}>
+            <Feather name="trash-2" size={24} color="#f87171" />
+          </Pressable>
+        </View>
 
         <View style={styles.footer}>
           <Feather
