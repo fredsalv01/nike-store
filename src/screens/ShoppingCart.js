@@ -8,32 +8,36 @@ import {
 } from "react-native";
 import CartListItem from "../components/CartListItem";
 import { useSelector } from "react-redux";
-import { selectSubTotal } from "../store/cartSlice";
+import {
+  selectDeliveryPrice,
+  selectSubTotal,
+  selectTotal,
+} from "../store/cartSlice";
 
-const ShoppingCartTotals = ({ subTotal, deliveryFee }) => (
+const ShoppingCartTotals = ({ subTotal, deliveryFee, total }) => (
   <View style={styles.totalsContainer}>
     <View style={styles.row}>
       <Text style={styles.text}>SubTotal</Text>
       <Text style={styles.text}>{subTotal} US$</Text>
     </View>
     <View style={styles.row}>
-      <Text style={styles.text}>Delivery {deliveryFee === 0 ? "(Free < $200)" : ""}</Text>
+      <Text style={styles.text}>
+        Delivery {deliveryFee === 0 ? "(Free > $200)" : ""}
+      </Text>
       <Text style={styles.text}>{deliveryFee} US$</Text>
     </View>
     <View style={styles.row}>
       <Text style={styles.textDark}>Total</Text>
-      <Text style={styles.textDark}>{deliveryFee + subTotal} US$</Text>
+      <Text style={styles.textDark}>{total} US$</Text>
     </View>
   </View>
 );
 
 const ShoppingCart = () => {
   const cart = useSelector((state) => state.cart.cart);
-  const FREE_DELIVERY = useSelector((state) => state.cart.freeDeliveryFrom);
-  const defaultDeliveryFee = useSelector((state) => state.cart.deliveryFee);
   const subTotal = useSelector(selectSubTotal);
-
-  const deliveryFee = subTotal >= FREE_DELIVERY ? defaultDeliveryFee : 0;
+  const deliveryFee = useSelector(selectDeliveryPrice);
+  const total = useSelector(selectTotal);
 
   return (
     <>
@@ -42,7 +46,11 @@ const ShoppingCart = () => {
           data={cart}
           renderItem={({ item }) => <CartListItem cartItem={item} />}
           ListFooterComponent={() => (
-            <ShoppingCartTotals subTotal={subTotal} deliveryFee={deliveryFee} />
+            <ShoppingCartTotals
+              subTotal={subTotal}
+              deliveryFee={deliveryFee}
+              total={total}
+            />
           )}
         />
         <TouchableOpacity onPress={{}} style={styles.button}>
