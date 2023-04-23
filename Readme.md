@@ -3,7 +3,8 @@
 This is an e-commerce project for Nike Store, created as part of a React Native development course. <br>
 The mobile application allows users to browse and purchase products from Nike Store. <br>
 Users should be able to create an account, add products to their shopping cart, and complete the checkout process.
-
+This is a FullStack Mobile implementation because I use an api deployed in render.com
+The following images are from the app. Enjoy trying my app!
 <p>
   <img src="https://github.com/fredsalv01/nike-store/blob/ui/assets/Captura1.PNG?raw=true" width="100" title="products">
   <img src="https://github.com/fredsalv01/nike-store/blob/ui/assets/Captura2.PNG?raw=true" width="100" title="product detail">

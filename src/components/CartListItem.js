@@ -14,7 +14,7 @@ const CartListItem = ({ cartItem }) => {
         onPress: () => {
           dispatch(
             cartSlice.actions.removeFromCart({
-              productId: cartItem.product.id,
+              productId: cartItem.product._id,
             })
           );
         },
@@ -30,7 +30,7 @@ const CartListItem = ({ cartItem }) => {
   const increaseQuantity = () => {
     dispatch(
       cartSlice.actions.changeQuantity({
-        productId: cartItem.product.id,
+        productId: cartItem.product._id,
         amount: 1,
       })
     );
@@ -39,7 +39,7 @@ const CartListItem = ({ cartItem }) => {
   const decreaseQuantity = () => {
     dispatch(
       cartSlice.actions.changeQuantity({
-        productId: cartItem.product.id,
+        productId: cartItem.product._id,
         amount: -1,
       })
     );
