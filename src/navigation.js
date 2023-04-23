@@ -4,9 +4,10 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import ProductDetailsScreen from "./screens/ProductDetailsScreen";
 import ProductsScreen from "./screens/ProductsScreen";
 import ShoppingCart from "./screens/ShoppingCart";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 import { selectNumbertOfItems } from "./store/cartSlice";
+import TrackOrderScreen from "./screens/TrackOrderScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +20,8 @@ const Navigation = () => {
           name="Products"
           component={ProductsScreen}
           options={({ navigation }) => ({
+            title: "",
+            headerTitleAlign: "center",
             headerRight: () => (
               <Pressable
                 onPress={() => navigation.navigate("Cart")}
@@ -36,8 +39,28 @@ const Navigation = () => {
                 </Text>
               </Pressable>
             ),
-            headerBackTitle: "Back",
-            headerBackTitleVisible: true,
+            headerLeft: () => (
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="account-circle"
+                  size={30}
+                  color="gray"
+                  style={{ marginRight: 20 }}
+                />
+                <MaterialCommunityIcons
+                  onPress={() => navigation.navigate("Track Order")}
+                  name="truck-delivery"
+                  size={22}
+                  color="gray"
+                />
+              </View>
+            ),
           })}
         />
         <Stack.Screen
@@ -57,6 +80,7 @@ const Navigation = () => {
             headerBackTitleVisible: true,
           }}
         />
+        <Stack.Screen name="Track Order" component={TrackOrderScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
