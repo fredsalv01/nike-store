@@ -12,6 +12,7 @@ export const cartSlice = createSlice({
   reducers: {
     addToCart: (state, action) => {
       const product = action.payload;
+      console.log(product);
       const cartItem = state.cart.find(
         (item) => item.product.id === product.id
       );
@@ -65,4 +66,4 @@ export const selectTotal = createSelector(
   selectSubTotal,
   selectDeliveryPrice,
   (subtotal, deliveryFee) => (subtotal + deliveryFee).toFixed(2)
-)
+);

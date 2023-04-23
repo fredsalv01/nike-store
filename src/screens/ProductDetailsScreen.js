@@ -8,16 +8,38 @@ import {
   ScrollView,
   TouchableOpacity,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
-import products from "../data/products";
 import { Ionicons } from "@expo/vector-icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { cartSlice } from "../store/cartSlice";
+import { useGetProductQuery } from "../store/apiSlice";
 
-const ProductDetailsScreen = ({ navigation }) => {
+const ProductDetailsScreen = ({ route, navigation }) => {
+  const id = route.params.id;
+  const { data, isLoading, error } = useGetProductQuery(id);
+
   const dispatch = useDispatch();
-  const product = useSelector((state) => state.products.selectedProduct);
   const { width } = useWindowDimensions();
+
+  if (isLoading) {
+    return (
+      <ActivityIndicator
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+        }}
+      />
+    );
+  }
+
+  if (error) {
+    return <Text>Error fetching products {error?.error}</Text>;
+  }
+
+  const product = data.data;
 
   const addToCart = () => {
     dispatch(cartSlice.actions.addToCart(product));
