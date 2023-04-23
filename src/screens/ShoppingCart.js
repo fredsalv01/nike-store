@@ -57,7 +57,6 @@ const ShoppingCart = () => {
         address: "123 Main Street",
       },
     });
-    console.log(result);
     if (result.data?.status === "OK") {
       Alert.alert(
         "Order Created",
