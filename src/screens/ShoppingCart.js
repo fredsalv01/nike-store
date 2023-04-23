@@ -66,17 +66,24 @@ const ShoppingCart = () => {
 
     // init payment sheet
     const initResponse = await initPaymentSheet({
-      merchantDisplayName: 'Nike Store Peru',
+      merchantDisplayName: "Nike Store Peru",
       paymentIntentClientSecret: response.data.data,
     });
     if (initResponse.error) {
-      console.log(initResponse.error)
+      console.log(initResponse.error);
       Alert.alert("Error", "There was an error initializing the payment sheet");
       return;
     }
 
     // present payment sheet
-    await presentPaymentSheet();
+    const paymentResponse = await presentPaymentSheet();
+    if (paymentResponse.error) {
+      Alert.alert(
+        `Error code: ${paymentResponse.error.code}`,
+        paymentResponse.error.message
+      );
+      return;
+    }
 
     // create order and get reference
     onCreateOrder();
