@@ -12,34 +12,39 @@ export const cartSlice = createSlice({
   reducers: {
     addToCart: (state, action) => {
       const product = action.payload;
-      console.log(product);
       const cartItem = state.cart.find(
-        (item) => item.product.id === product.id
+        (item) => item.product._id === product._id
       );
       if (cartItem) {
         cartItem.quantity += 1;
       } else {
         state.cart.push({
           product: product,
+          size: product.sizes[0],
           quantity: 1,
         });
       }
     },
     changeQuantity: (state, action) => {
       const { productId, amount } = action.payload;
-      const cartItem = state.cart.find((item) => item.product.id === productId);
+      const cartItem = state.cart.find(
+        (item) => item.product._id === productId
+      );
       if (cartItem) {
         cartItem.quantity += amount;
         if (cartItem.quantity === 0) {
           state.cart = state.cart.filter(
-            (item) => item.product.id !== productId
+            (item) => item.product._id !== productId
           );
         }
       }
     },
     removeFromCart: (state, action) => {
       const { productId } = action.payload;
-      state.cart = state.cart.filter((item) => item.product.id !== productId);
+      state.cart = state.cart.filter((item) => item.product._id !== productId);
+    },
+    clear: (state) => {
+      state.cart = [];
     },
   },
 });
