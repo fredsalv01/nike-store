@@ -70,5 +70,5 @@ export const selectDeliveryPrice = createSelector(
 export const selectTotal = createSelector(
   selectSubTotal,
   selectDeliveryPrice,
-  (subtotal, deliveryFee) => (subtotal + deliveryFee).toFixed(2)
+  (subtotal, deliveryFee) => (subtotal + deliveryFee)
 );

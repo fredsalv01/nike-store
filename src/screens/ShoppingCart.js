@@ -1,18 +1,22 @@
 import {
+  ActivityIndicator,
+  Alert,
   FlatList,
-  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import CartListItem from "../components/CartListItem";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
+  cartSlice,
   selectDeliveryPrice,
   selectSubTotal,
   selectTotal,
 } from "../store/cartSlice";
+import { useCreateOrderMutation } from "../store/apiSlice";
+import { useNavigation } from "@react-navigation/native";
 
 const ShoppingCartTotals = ({ subTotal, deliveryFee, total }) => (
   <View style={styles.totalsContainer}>
@@ -28,7 +32,7 @@ const ShoppingCartTotals = ({ subTotal, deliveryFee, total }) => (
     </View>
     <View style={styles.row}>
       <Text style={styles.textDark}>Total</Text>
-      <Text style={styles.textDark}>{total} US$</Text>
+      <Text style={styles.textDark}>{total.toFixed(2)} US$</Text>
     </View>
   </View>
 );
@@ -38,6 +42,38 @@ const ShoppingCart = () => {
   const subTotal = useSelector(selectSubTotal);
   const deliveryFee = useSelector(selectDeliveryPrice);
   const total = useSelector(selectTotal);
+  const [createOrder, { data, error, isLoading }] = useCreateOrderMutation();
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const onCreateOrder = async () => {
+    const result = await createOrder({
+      items: cart,
+      subtotal: subTotal,
+      delivery: deliveryFee,
+      total: total,
+      customer: {
+        name: "John Doe",
+        email: "john_doe@example.com",
+        address: "123 Main Street",
+      },
+    });
+    console.log(result);
+    if (result.data?.status === "OK") {
+      Alert.alert(
+        "Order Created",
+        `Your order has been created with reference: ${result.data?.data?.ref}`,
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              dispatch(cartSlice.actions.clear());
+              navigation.navigate("Products");
+            },
+          },
+        ]
+      );
+    }
+  };
 
   return (
     <>
@@ -53,8 +89,10 @@ const ShoppingCart = () => {
             />
           )}
         />
-        <TouchableOpacity onPress={{}} style={styles.button}>
-          <Text style={styles.buttonText}>Checkout</Text>
+        <TouchableOpacity onPress={onCreateOrder} style={styles.button}>
+          <Text style={styles.buttonText}>
+            {isLoading ? <ActivityIndicator /> : "Checkout"}
+          </Text>
         </TouchableOpacity>
       </View>
     </>
@@ -98,5 +136,8 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     fontSize: 16,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
