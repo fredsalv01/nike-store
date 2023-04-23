@@ -15,8 +15,12 @@ import {
   selectSubTotal,
   selectTotal,
 } from "../store/cartSlice";
-import { useCreateOrderMutation } from "../store/apiSlice";
+import {
+  useCreateOrderMutation,
+  useCreatePaymentIntentMutation,
+} from "../store/apiSlice";
 import { useNavigation } from "@react-navigation/native";
+import { useStripe } from "@stripe/stripe-react-native";
 
 const ShoppingCartTotals = ({ subTotal, deliveryFee, total }) => (
   <View style={styles.totalsContainer}>
@@ -43,8 +47,41 @@ const ShoppingCart = () => {
   const deliveryFee = useSelector(selectDeliveryPrice);
   const total = useSelector(selectTotal);
   const [createOrder, { data, error, isLoading }] = useCreateOrderMutation();
+  const [createPaymentIntent] = useCreatePaymentIntentMutation();
+  const { initPaymentSheet, presentPaymentSheet } = useStripe();
+
   const dispatch = useDispatch();
   const navigation = useNavigation();
+
+  const onCheckout = async () => {
+    // create payment intent
+    const response = await createPaymentIntent({
+      amount: Math.floor(total * 100),
+    });
+    console.log(response.data.data);
+    if (response.error) {
+      Alert.alert("Error", "There was an error creating the payment intent");
+      return;
+    }
+
+    // init payment sheet
+    const initResponse = await initPaymentSheet({
+      merchantDisplayName: 'Nike Store Peru',
+      paymentIntentClientSecret: response.data.data,
+    });
+    if (initResponse.error) {
+      console.log(initResponse.error)
+      Alert.alert("Error", "There was an error initializing the payment sheet");
+      return;
+    }
+
+    // present payment sheet
+    await presentPaymentSheet();
+
+    // create order and get reference
+    onCreateOrder();
+  };
+
   const onCreateOrder = async () => {
     const result = await createOrder({
       items: cart,
@@ -88,7 +125,7 @@ const ShoppingCart = () => {
             />
           )}
         />
-        <TouchableOpacity onPress={onCreateOrder} style={styles.button}>
+        <TouchableOpacity onPress={onCheckout} style={styles.button}>
           <Text style={styles.buttonText}>
             {isLoading ? <ActivityIndicator /> : "Checkout"}
           </Text>
