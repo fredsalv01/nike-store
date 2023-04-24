@@ -15,6 +15,10 @@ Enjoy trying the app!
   <img src="https://github.com/fredsalv01/nike-store/blob/ui/assets/Captura3.PNG?raw=true" width="100" title="cart">
   <img src="https://github.com/fredsalv01/nike-store/blob/ui/assets/Captura4.PNG?raw=true" width="100" title="drop item from cart">
 </p>
+See The complete app with this qr.
+<p>
+  <img src="https://github.com/fredsalv01/nike-store/blob/master/assets/QR.PNG" width="500" title="drop item from cart">
+</p>
 
 ## Table of Contents
 
